@@ -1,0 +1,11 @@
+{
+  "name": "distro-light-signup",
+  "authors": [
+    "Matt Brennan <matt@153.io> (http://blog.153.io/)"
+  ],
+  "homepage": "https://github.com/quarterto/distro-light-signup",
+  "private": true,
+  "dependencies": {
+    "o-email-only-signup": "Financial-Times/n-light-signup#origami"
+  }
+}

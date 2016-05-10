@@ -18,6 +18,9 @@ ESLINT_OPTS = --fix
 LINTSPACE = $(NPM_BIN)/lintspaces
 LINTSPACE_OPTS = -n -d tabs -l 2
 
+POST_SASS = $(NPM_BIN)/post-sass
+POST_SASS_OPTS = --cssPath public
+
 all: babel
 
 babel: $(LIB) $(LIB_DIRS) $(LIB_FILES)
@@ -36,6 +39,9 @@ clean-$(LIB)/%:
 	$(eval SRC_THINGS := $(patsubst $(SRC)/%, %, $(wildcard $(SRC)/$*/*)))
 	$(eval TO_DELETE := $(addprefix $(LIB)/, $(shell comm -23 <(echo $(LIB_THINGS) | tr ' ' '\n' | sort) <(echo $(SRC_THINGS) | tr ' ' '\n' | sort))))
 	$(if $(TO_DELETE), rm $(TO_DELETE))
+
+public/style.css: scss/style.scss
+	$(POST_SASS) $(POST_SASS_OPTS)
 
 clean:
 	rm -rf $(LIB)

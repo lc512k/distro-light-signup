@@ -23,6 +23,7 @@
   "homepage": "https://github.com/quarterto/distro-light-signup#readme",
   "dependencies": {
     "@financial-times/newsletter-signup": "^1.0.1",
+    "@quarterto/post-sass": "^1.1.3",
     "babel-cli": "^6.8.0",
     "babel-runtime": "^6.6.1",
     "dotenv": "^2.0.0",

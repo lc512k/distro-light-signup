@@ -2,6 +2,8 @@
 	"ext": "js json html css",
 	"watch": [
 		"package.json",
-		"lib"
-	]
+		"lib",
+		".env"
+	],
+	"exec": "node -r dotenv/config"
 }

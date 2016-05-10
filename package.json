@@ -5,9 +5,10 @@
   "main": "lib/index.js",
   "scripts": {
     "prestart": "wmake babel &",
-    "start": "nodemon",
+    "start": "nodemon lib/index.js",
     "postinstall": "make",
-    "watch": "wmake"
+    "watch": "wmake",
+    "poststart": "sleep 5 && killall fswatch || true"
   },
   "repository": {
     "type": "git",
@@ -24,7 +25,9 @@
     "@financial-times/newsletter-signup": "^1.0.1",
     "babel-cli": "^6.8.0",
     "babel-runtime": "^6.6.1",
-    "express": "^4.13.4"
+    "dotenv": "^2.0.0",
+    "express": "^4.13.4",
+    "morgan": "^1.7.0"
   },
   "devDependencies": {
     "babel-plugin-transform-runtime": "^6.8.0",

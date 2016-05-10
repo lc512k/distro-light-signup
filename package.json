@@ -24,6 +24,7 @@
   "dependencies": {
     "@financial-times/newsletter-signup": "^1.0.1",
     "@quarterto/post-sass": "^1.1.3",
+    "autoprefixer": "^6.3.6",
     "babel-cli": "^6.8.0",
     "babel-runtime": "^6.6.1",
     "dotenv": "^2.0.0",

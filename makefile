@@ -21,7 +21,7 @@ LINTSPACE_OPTS = -n -d tabs -l 2
 POST_SASS = $(NPM_BIN)/post-sass
 POST_SASS_OPTS = --cssPath public --postCss autoprefixer
 
-all: babel
+all: babel public/style.css
 
 babel: $(LIB) $(LIB_DIRS) $(LIB_FILES)
 

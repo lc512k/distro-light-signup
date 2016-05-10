@@ -4,7 +4,7 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
-    "prestart": "wmake babel &",
+    "prestart": "wmake &",
     "start": "nodemon lib/index.js",
     "postinstall": "make",
     "watch": "wmake",

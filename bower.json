@@ -6,7 +6,7 @@
   "homepage": "https://github.com/quarterto/distro-light-signup",
   "private": true,
   "dependencies": {
-    "o-email-only-signup": "Financial-Times/n-light-signup#origami",
+    "o-email-only-signup": "^2.0.0",
     "o-fonts": "^2.1.2"
   }
 }

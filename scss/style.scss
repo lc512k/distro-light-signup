@@ -1,7 +1,10 @@
 $o-fonts-path: '//next-geebee.ft.com/build/v2/files/o-fonts-assets@1.3.0/';
+$o-forms-is-silent: false;
+$o-grid-is-silent: false;
 
 @import 'o-email-only-signup/main';
 @import 'o-fonts/main';
+@import 'o-grid/main';
 
 @include oFontsInclude(MetricWeb, light);
 

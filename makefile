@@ -13,7 +13,7 @@ BABEL = $(NPM_BIN)/babel
 BABEL_OPTS = --presets es2015
 
 BROWSERIFY = $(NPM_BIN)/browserify
-BROWSERIFY_OPTS = -t [ babelify $(BABEL_OPTS) ]
+BROWSERIFY_OPTS = -t [ babelify $(BABEL_OPTS) ] -t debowerify
 
 ESLINT = $(NPM_BIN)/eslint
 ESLINT_OPTS = --fix

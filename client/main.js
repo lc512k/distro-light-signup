@@ -1,4 +1,4 @@
-import oEmailOnlySignup from '../bower_components/o-email-only-signup/main';
+import oEmailOnlySignup from 'o-email-only-signup';
 
 oEmailOnlySignup.init(document.body, {
 	signupUrl: '/signup',

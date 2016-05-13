@@ -10,7 +10,10 @@ LIB_DIRS = $(dir $(LIB_FILES))
 NPM_BIN := $(shell npm bin)
 
 BABEL = $(NPM_BIN)/babel
-BABEL_OPTS =
+BABEL_OPTS = --presets es2015
+
+BROWSERIFY = $(NPM_BIN)/browserify
+BROWSERIFY_OPTS = -t [ babelify $(BABEL_OPTS) ]
 
 ESLINT = $(NPM_BIN)/eslint
 ESLINT_OPTS = --fix
@@ -21,7 +24,7 @@ LINTSPACE_OPTS = -n -d tabs -l 2
 POST_SASS = $(NPM_BIN)/post-sass
 POST_SASS_OPTS = --cssPath public --postCss autoprefixer
 
-all: babel public/style.css
+all: babel public/style.css public/main.js
 
 babel: $(LIB) $(LIB_DIRS) $(LIB_FILES)
 
@@ -39,6 +42,9 @@ clean-$(LIB)/%:
 	$(eval SRC_THINGS := $(patsubst $(SRC)/%, %, $(wildcard $(SRC)/$*/*)))
 	$(eval TO_DELETE := $(addprefix $(LIB)/, $(shell comm -23 <(echo $(LIB_THINGS) | tr ' ' '\n' | sort) <(echo $(SRC_THINGS) | tr ' ' '\n' | sort))))
 	$(if $(TO_DELETE), rm $(TO_DELETE))
+
+public/%.js: client/%.js
+	$(BROWSERIFY) $(BROWSERIFY_OPTS) -o $@ $<
 
 public/style.css: scss/style.scss
 	$(POST_SASS) $(POST_SASS_OPTS)

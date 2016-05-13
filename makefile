@@ -24,6 +24,8 @@ LINTSPACE_OPTS = -n -d tabs -l 2
 POST_SASS = $(NPM_BIN)/post-sass
 POST_SASS_OPTS = --cssPath public --postCss autoprefixer
 
+BOWER = $(NPM_BIN)/bower
+
 all: babel public/style.css public/main.js
 
 babel: $(LIB) $(LIB_DIRS) $(LIB_FILES)
@@ -46,8 +48,11 @@ clean-$(LIB)/%:
 public/%.js: client/%.js
 	$(BROWSERIFY) $(BROWSERIFY_OPTS) -o $@ $<
 
-public/style.css: scss/style.scss
+public/style.css: scss/style.scss bower_components
 	$(POST_SASS) $(POST_SASS_OPTS)
+
+bower_components: bower.json
+	$(BOWER) install
 
 clean:
 	rm -rf $(LIB)

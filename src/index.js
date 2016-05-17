@@ -2,8 +2,11 @@ import newsletterSignup from '@financial-times/newsletter-signup';
 import express from 'express';
 import logger from 'morgan';
 import expressHandlebars from 'express-handlebars';
+import assertEnv from '@quarterto/assert-env';
 
 import devController from './controllers/dev';
+
+assertEnv(Object.keys(require('../app.json').env));
 
 const app = express();
 const port = process.env.PORT || 1337;

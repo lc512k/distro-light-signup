@@ -6,7 +6,7 @@
   "homepage": "https://github.com/quarterto/distro-light-signup",
   "private": true,
   "dependencies": {
-    "o-email-only-signup": "^2.0.0",
+    "o-email-only-signup": "^2.2.1",
     "o-fonts": "^2.1.2",
     "o-grid": "^4.0.9"
   }

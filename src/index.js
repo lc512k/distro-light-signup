@@ -15,6 +15,10 @@ if(app.get('env') !== 'production') {
 	require('longjohn'); // eslint-disable-line global-require
 }
 
+if(process.env.INJECT_SCRIPT) {
+	app.locals.injectScript = process.env.INJECT_SCRIPT;
+}
+
 app.engine('html', expressHandlebars({
 	extname: '.html',
 	defaultLayout: 'main',

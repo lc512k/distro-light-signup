@@ -3,6 +3,7 @@ import express from 'express';
 import logger from 'morgan';
 import expressHandlebars from 'express-handlebars';
 import assertEnv from '@quarterto/assert-env';
+import url from 'url';
 
 import {getResponseMsg} from './bower/o-email-only-signup';
 import devController from './controllers/dev';
@@ -35,8 +36,34 @@ app.use('/public', express.static('public'));
 
 app.post('/signup', (req, res) => {
 	res.render('thanks', {
-		message: getResponseMsg(res.locals.newsletterSignupStatus),
+		message: getResponseMsg(res.locals.newsletterSignupStatus, '/'),
 	});
 });
+
+function redirectToNext(req, res) {
+	const nextUrl = url.format({
+		hostname: 'next.ft.com',
+		pathname: req.path,
+		protocol: 'https',
+		query: req.query,
+	});
+
+	const optInUrl = url.format({
+		hostname: 'next.ft.com',
+		pathname: '/__opt-in',
+		protocol: 'https',
+		query: {
+			referrer: nextUrl,
+			optedvia: 'light-signup',
+		},
+	});
+
+	console.log(nextUrl, optInUrl);
+
+	res.redirect(optInUrl);
+}
+
+app.get('/products', redirectToNext);
+app.get('/login', redirectToNext);
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

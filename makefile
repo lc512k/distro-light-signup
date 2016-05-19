@@ -23,7 +23,7 @@ POST_SASS_OPTS = --cssPath public --postCss autoprefixer
 
 BOWER = $(NPM_BIN)/bower
 
-all: babel public/style.css public/main.js
+all: babel public/style.css
 
 babel: $(LIB) $(LIB_DIRS) $(LIB_FILES)
 

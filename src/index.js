@@ -29,14 +29,17 @@ app.set('view engine', 'html');
 
 app.use(logger(process.env.LOG_FORMAT || (app.get('env') === 'development' ? 'dev' : 'combined')));
 
-app.get('/', (req, res) => res.render('signup'));
+app.get('/', (req, res) => res.render('signup', {article: req.query.article}));
 app.use('/signup', (req, res, next) => { req.newsletterSignupPostNoResponse = true; next(); }, newsletterSignup);
 app.use('/dev', devController);
 app.use('/public', express.static('public'));
 
 app.post('/signup', (req, res) => {
 	res.render('thanks', {
-		message: getResponseMsg(res.locals.newsletterSignupStatus, '/'),
+		message: getResponseMsg(
+			res.locals.newsletterSignupStatus,
+			encodeURIComponent(req.query.article ? `/content/${req.query.article}` : '/')
+		),
 	});
 });
 

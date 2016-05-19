@@ -6,6 +6,7 @@ import assertEnv from '@quarterto/assert-env';
 import url from 'url';
 
 import {getResponseMsg} from './bower/o-email-only-signup';
+import devController from './dev';
 
 assertEnv(Object.keys(require('../app.json').env));
 
@@ -31,6 +32,7 @@ app.use(logger(process.env.LOG_FORMAT || (app.get('env') === 'development' ? 'de
 app.get('/', (req, res) => res.render('signup', {article: req.query.article}));
 app.use('/signup', (req, res, next) => { req.newsletterSignupPostNoResponse = true; next(); }, newsletterSignup);
 app.use('/public', express.static('public'));
+app.use('/dev', devController);
 
 app.post('/signup', (req, res) => {
 	res.render('thanks', {

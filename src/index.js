@@ -35,7 +35,7 @@ app.use('/public', express.static('public'));
 
 app.post('/signup', (req, res) => {
 	res.render('thanks', {
-		message: getResponseMsg(res.locals.newsletterSignupStatus)
+		message: getResponseMsg(res.locals.newsletterSignupStatus),
 	});
 });
 

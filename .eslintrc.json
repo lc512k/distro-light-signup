@@ -15,7 +15,8 @@
 				"case": {"after": true},
 				"let": {"after": true},
 				"const": {"after": true},
-				"from": {"after": true}
+				"from": {"after": true},
+				"import": {"after": true}
 			}
 		}],
 		"max-len": [1, 150, 2],

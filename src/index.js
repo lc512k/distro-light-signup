@@ -34,6 +34,7 @@ app.use('/public', express.static('public'));
 
 app.post('/signup', (req, res) => {
 	res.render('thanks', {
+		somethingWentWrong: res.locals.newsletterSignupStatus === 'INVALID_REQUEST',
 		message: getResponseMsg(
 			res.locals.newsletterSignupStatus,
 			encodeURIComponent(req.query.article ? `/content/${req.query.article}` : '/')
@@ -58,8 +59,6 @@ function redirectToNext(req, res) {
 			optedvia: 'light-signup',
 		},
 	});
-
-	console.log(nextUrl, optInUrl);
 
 	res.redirect(optInUrl);
 }

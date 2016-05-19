@@ -4,7 +4,7 @@ SRC = src
 LIB = lib
 
 SRC_FILES = $(shell find $(SRC) -name '*.js')
-LIB_FILES = $(patsubst $(SRC)/%.js, $(LIB)/%.js, $(SRC_FILES))
+LIB_FILES = $(patsubst $(SRC)/%.js, $(LIB)/%.js, $(SRC_FILES)) $(LIB)/bower/o-email-only-signup.js
 LIB_DIRS = $(dir $(LIB_FILES))
 
 NPM_BIN := $(shell npm bin)
@@ -29,6 +29,12 @@ BOWER = $(NPM_BIN)/bower
 all: babel public/style.css public/main.js
 
 babel: $(LIB) $(LIB_DIRS) $(LIB_FILES)
+
+$(LIB)/bower: bower_components
+	mkdir -p $@
+
+$(LIB)/bower/o-email-only-signup.js: bower_components/o-email-only-signup/src/email-only-signup.js
+	$(BABEL) $(BABEL_OPTS) $< -o $@
 
 $(LIB)/%.js: $(SRC)/%.js
 	$(BABEL) $(BABEL_OPTS) $< -o $@

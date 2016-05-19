@@ -4,6 +4,7 @@ import logger from 'morgan';
 import expressHandlebars from 'express-handlebars';
 import assertEnv from '@quarterto/assert-env';
 
+import {getResponseMsg} from './bower/o-email-only-signup';
 import devController from './controllers/dev';
 
 assertEnv(Object.keys(require('../app.json').env));
@@ -28,8 +29,14 @@ app.set('view engine', 'html');
 app.use(logger(process.env.LOG_FORMAT || (app.get('env') === 'development' ? 'dev' : 'combined')));
 
 app.get('/', (req, res) => res.render('signup'));
-app.use('/signup', newsletterSignup);
+app.use('/signup', (req, res, next) => { req.newsletterSignupPostNoResponse = true; next(); }, newsletterSignup);
 app.use('/dev', devController);
 app.use('/public', express.static('public'));
+
+app.post('/signup', (req, res) => {
+	res.render('thanks', {
+		message: getResponseMsg(res.locals.newsletterSignupStatus)
+	});
+});
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

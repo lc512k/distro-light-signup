@@ -35,13 +35,15 @@ app.use('/public', express.static('public'));
 app.use('/dev', devController);
 
 app.post('/signup', (req, res) => {
-	res.render('thanks', {
-		somethingWentWrong: res.locals.newsletterSignupStatus === 'INVALID_REQUEST',
-		message: getResponseMsg(
-			res.locals.newsletterSignupStatus,
-			encodeURIComponent(req.query.article ? `/content/${req.query.article}` : '/')
-		),
-	});
+	if(req.newsletterSignupPostNoResponse) {
+		res.render('thanks', {
+			somethingWentWrong: res.locals.newsletterSignupStatus === 'INVALID_REQUEST',
+			message: getResponseMsg(
+				res.locals.newsletterSignupStatus,
+				encodeURIComponent(req.query.article ? `/content/${req.query.article}` : '/')
+			),
+		});
+	}
 });
 
 function redirectToNext(req, res) {

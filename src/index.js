@@ -30,7 +30,7 @@ app.set('view engine', 'html');
 app.use(logger(process.env.LOG_FORMAT || (app.get('env') === 'development' ? 'dev' : 'combined')));
 
 app.get('/', (req, res) => res.render('signup', {article: req.query.article}));
-app.use('/signup', (req, res, next) => { req.newsletterSignupPostNoResponse = true; next(); }, newsletterSignup);
+app.use('/signup', newsletterSignup);
 app.use('/public', express.static('public'));
 app.use('/dev', devController);
 

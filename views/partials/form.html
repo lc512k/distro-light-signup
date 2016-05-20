@@ -1,4 +1,5 @@
-<form class="o-email-only-signup__form" method="post" action="/signup{{#if article}}?article={{article}}{{/if}}">
+<form class="o-email-only-signup__form" method="post" action="/signup{{#if article}}?article={{article}}{{/if}}" data-o-email-only-signup-form>
+	<div class="o-email-only-signup__visually-hidden" data-o-email-only-signup-close></div>
 	<label for="email" class="o-email-only-signup__visually-hidden">Email address:</label>
 	<input data-o-grid-colspan="7" type="email" id="email" name="email" required class="o-email-only-signup__email o-forms-text" data-trackable="email">
 	<button data-o-grid-colspan="4" type="submit" class="o-email-only-signup__submit" data-trackable="submit">Sign up</button>

@@ -12,6 +12,9 @@ NPM_BIN := $(shell npm bin)
 BABEL = $(NPM_BIN)/babel
 BABEL_OPTS = --presets es2015
 
+BROWSERIFY = $(NPM_BIN)/browserify
+BROWSERIFY_OPTS = -t [ babelify $(BABEL_OPTS) ] -t debowerify
+
 ESLINT = $(NPM_BIN)/eslint
 ESLINT_OPTS = --fix
 
@@ -47,6 +50,9 @@ clean-$(LIB)/%:
 	$(eval SRC_THINGS := $(patsubst $(SRC)/%, %, $(wildcard $(SRC)/$*/*)))
 	$(eval TO_DELETE := $(addprefix $(LIB)/, $(shell comm -23 <(echo $(LIB_THINGS) | tr ' ' '\n' | sort) <(echo $(SRC_THINGS) | tr ' ' '\n' | sort))))
 	$(if $(TO_DELETE), rm $(TO_DELETE))
+
+public/%.js: client/%.js
+	$(BROWSERIFY) $(BROWSERIFY_OPTS) -o $@ $<
 
 public/style.css: scss/style.scss bower_components
 	$(POST_SASS) $(POST_SASS_OPTS)

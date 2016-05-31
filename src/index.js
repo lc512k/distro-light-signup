@@ -5,7 +5,7 @@ import expressHandlebars from 'express-handlebars';
 import assertEnv from '@quarterto/assert-env';
 import url from 'url';
 
-import {getResponseMsg} from './bower/o-email-only-signup';
+import{getResponseMsg} from './bower/o-email-only-signup';
 import devController from './dev';
 
 assertEnv(Object.keys(require('../app.json').env));
@@ -29,7 +29,11 @@ app.set('view engine', 'html');
 
 app.use(logger(process.env.LOG_FORMAT || (app.get('env') === 'development' ? 'dev' : 'combined')));
 
-app.get('/', (req, res) => res.render('signup', {article: req.query.article}));
+app.get('/', (req, res) => res.render('signup', {
+	article: req.query.article,
+	product: process.env.SPOOR_PRODUCT,
+	mailingList: process.env.MAILING_LIST,
+}));
 app.use('/signup', (req, res, next) => { req.newsletterSignupPostNoResponse = !!req.query.form; next(); }, newsletterSignup);
 app.use('/public', express.static('public'));
 app.use('/dev', devController);

@@ -5,7 +5,7 @@ import expressHandlebars from 'express-handlebars';
 import assertEnv from '@quarterto/assert-env';
 import url from 'url';
 
-import{getResponseMsg} from './bower/o-email-only-signup';
+import {getResponseMsg} from './bower/o-email-only-signup';
 import devController from './dev';
 
 assertEnv(Object.keys(require('../app.json').env));

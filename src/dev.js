@@ -1,5 +1,5 @@
-import{Router} from 'express';
-import{anonEmailLists} from '@financial-times/newsletter-signup';
+import {Router} from 'express';
+import {anonEmailLists} from '@financial-times/newsletter-signup';
 const router = new Router();
 
 router.get('/subscribed/:email', (req, res, next) => {

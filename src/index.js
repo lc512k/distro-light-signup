@@ -4,13 +4,36 @@ import logger from 'morgan';
 import expressHandlebars from 'express-handlebars';
 import assertEnv from '@quarterto/assert-env';
 import url from 'url';
+import ftwebservice from 'express-ftwebservice';
+import path from 'path';
+import raven from 'raven';
+import os from 'os';
+import pkg from '../package.json';
+import errorhandler from 'errorhandler';
+import {env as herokuEnv} from '../app.json';
 
 import {getResponseMsg} from './bower/o-email-only-signup';
 import devController from './dev';
 
-assertEnv(Object.keys(require('../app.json').env));
-
 const app = express();
+
+let ravenClient;
+
+if(app.get('env') === 'production') {
+	assertEnv(['SENTRY_DSN']);
+	ravenClient = new raven.Client(process.env.SENTRY_DSN, {
+		release: pkg.version,
+		name: process.env.HEROKU_APP_NAME || os.hostname(),
+		extra: {
+			env: process.env,
+		},
+		tags: {},
+	});
+	ravenClient.patchGlobal(() => process.exit(1));
+}
+
+assertEnv(Object.keys(herokuEnv).filter(key => herokuEnv[key].required));
+
 const port = process.env.PORT || 1337;
 
 if(app.get('env') !== 'production') {
@@ -28,6 +51,36 @@ app.engine('html', expressHandlebars({
 app.set('view engine', 'html');
 
 app.use(logger(process.env.LOG_FORMAT || (app.get('env') === 'development' ? 'dev' : 'combined')));
+
+ftwebservice(app, {
+	manifestPath: path.join(__dirname, '../package.json'),
+	about: {
+		schemaVersion: 1,
+		name: 'distro-light-signup',
+		purpose: 'Service to display a light signup form and handle email subscription',
+		audience: 'public',
+		primaryUrl: 'https://distro-light-signup.ft.com',
+		contacts: [
+			{
+				name: 'Matthew Brennan',
+				email: 'matthew.brennan@ft.com',
+			},
+			{
+				name: 'George Crawford',
+				email: 'george.crawford@ft.com',
+			},
+		],
+	},
+});
+
+if(app.get('env') === 'production') {
+	app.use(raven.middleware.express.requestHandler(ravenClient));
+	app.use((req, res, next) => {
+		ravenClient.setExtraContext(raven.parsers.parseRequest(req));
+		req.raven = ravenClient;
+		next();
+	});
+}
 
 app.get('/', (req, res) => res.render('signup', {
 	article: req.query.article,
@@ -73,5 +126,11 @@ function redirectToNext(req, res) {
 
 app.get('/products', redirectToNext);
 app.get('/login', redirectToNext);
+
+if(app.get('env') === 'development') {
+	app.use(errorhandler());
+} else if(app.get('env') === 'production') {
+	app.use(raven.middleware.express.errorHandler(ravenClient));
+}
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

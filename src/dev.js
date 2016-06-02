@@ -9,4 +9,6 @@ router.get('/subscribed/:email', (req, res, next) => {
 	.catch(next);
 });
 
+router.get('/barf', (req, res, next) => next(new Error('lol')));
+
 export default router;

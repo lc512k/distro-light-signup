@@ -6,13 +6,31 @@ import assertEnv from '@quarterto/assert-env';
 import url from 'url';
 import ftwebservice from 'express-ftwebservice';
 import path from 'path';
+import raven from 'raven';
+import os from 'os';
+import pkg from '../package.json';
+import errorhandler from 'errorhandler';
 
 import {getResponseMsg} from './bower/o-email-only-signup';
 import devController from './dev';
 
+const app = express();
+
+let ravenClient;
+
+if(app.get('env') === 'production') {
+	assertEnv(['SENTRY_DSN']);
+	ravenClient = new raven.Client(process.env.SENTRY_DSN);
+	ravenClient.setExtraContext({env: process.env});
+	ravenClient.setTagsContext({
+		server_name: process.env.HEROKU_APP_NAME || os.hostname(),
+		release: pkg.version,
+	});
+	ravenClient.patchGlobal(() => process.exit(1));
+}
+
 assertEnv(Object.keys(require('../app.json').env));
 
-const app = express();
 const port = process.env.PORT || 1337;
 
 if(app.get('env') !== 'production') {
@@ -51,6 +69,15 @@ ftwebservice(app, {
 		],
 	},
 });
+
+if(app.get('env') === 'production') {
+	app.use(raven.middleware.express.requestHandler(ravenClient));
+	app.use((req, res, next) => {
+		ravenClient.setExtraContext(raven.parsers.parseRequest(req));
+		req.raven = ravenClient;
+		next();
+	});
+}
 
 app.get('/', (req, res) => res.render('signup', {
 	article: req.query.article,
@@ -96,5 +123,11 @@ function redirectToNext(req, res) {
 
 app.get('/products', redirectToNext);
 app.get('/login', redirectToNext);
+
+if(app.get('env') === 'development') {
+	app.use(errorhandler());
+} else if(app.get('env') === 'production') {
+	app.use(raven.middleware.express.errorHandler(ravenClient));
+}
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

@@ -10,6 +10,7 @@ import raven from 'raven';
 import os from 'os';
 import pkg from '../package.json';
 import errorhandler from 'errorhandler';
+import {env as herokuEnv} from '../app.json';
 
 import {getResponseMsg} from './bower/o-email-only-signup';
 import devController from './dev';
@@ -29,7 +30,7 @@ if(app.get('env') === 'production') {
 	ravenClient.patchGlobal(() => process.exit(1));
 }
 
-assertEnv(Object.keys(require('../app.json').env));
+assertEnv(Object.keys(herokuEnv).filter(key => herokuEnv[key].required));
 
 const port = process.env.PORT || 1337;
 

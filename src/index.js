@@ -4,6 +4,8 @@ import logger from 'morgan';
 import expressHandlebars from 'express-handlebars';
 import assertEnv from '@quarterto/assert-env';
 import url from 'url';
+import ftwebservice from 'express-ftwebservice';
+import path from 'path';
 
 import {getResponseMsg} from './bower/o-email-only-signup';
 import devController from './dev';
@@ -28,6 +30,27 @@ app.engine('html', expressHandlebars({
 app.set('view engine', 'html');
 
 app.use(logger(process.env.LOG_FORMAT || (app.get('env') === 'development' ? 'dev' : 'combined')));
+
+ftwebservice(app, {
+	manifestPath: path.join(__dirname, '../package.json'),
+	about: {
+		schemaVersion: 1,
+		name: 'distro-light-signup',
+		purpose: 'Service to display a light signup form and handle email subscription',
+		audience: 'public',
+		primaryUrl: 'https://distro-light-signup.ft.com',
+		contacts: [
+			{
+				name: 'Matthew Brennan',
+				email: 'matthew.brennan@ft.com',
+			},
+			{
+				name: 'George Crawford',
+				email: 'george.crawford@ft.com',
+			},
+		],
+	},
+});
 
 app.get('/', (req, res) => res.render('signup', {
 	article: req.query.article,

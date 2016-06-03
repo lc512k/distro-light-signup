@@ -9,8 +9,7 @@ oEmailOnlySignup.init(document.body, {
 
 window.addEventListener('DOMContentLoaded', () => {
 	const input = document.querySelector('input[type=email]');
-	input.addEventListener('click', () => {
-		document.querySelector('.o-email-only-signup__no-spam').textContent = 'clicked';
-		input.focus();
+	input.addEventListener('focus', () => {
+		document.querySelector('.o-email-only-signup__no-spam').textContent = 'focused';
 	});
 });

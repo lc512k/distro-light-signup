@@ -6,3 +6,11 @@ const {article, product, mailinglist} = querystring.parse(location.search.substr
 oEmailOnlySignup.init(document.body, {
 	signupUrl: `/signup?article=${article}&product=${product}&mailinglist=${mailinglist}`,
 });
+
+window.addEventListener('DOMContentLoaded', () => {
+	const input = document.querySelector('input[type=email]');
+	input.addEventListener('click', () => {
+		document.querySelector('.o-email-only-signup__no-spam').textContent = 'clicked';
+		input.focus();
+	});
+});

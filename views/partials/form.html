@@ -2,6 +2,7 @@
 	<div class="o-email-only-signup__visually-hidden" data-o-email-only-signup-close></div>
 	<label for="email" class="o-email-only-signup__visually-hidden">Email address:</label>
 	{{#if isAndroidFacebook}}
+	<input type="hidden" id="email" name="email" class="o-email-only-signup__email">
 	<a class="o-email-only-signup__submit" href="{{autofocusUrl}}" target="_blank">Sign up</a>
 	{{else}}
 	<input data-o-grid-colspan="7" type="email" id="email" name="email" required class="o-email-only-signup__email o-forms-text" data-trackable="email" {{#if autofocus}}autofocus{{/if}}>

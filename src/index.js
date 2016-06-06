@@ -4,6 +4,7 @@ import logger from 'morgan';
 import expressHandlebars from 'express-handlebars';
 import assertEnv from '@quarterto/assert-env';
 import url from 'url';
+import useragent from 'useragent';
 import ftwebservice from 'express-ftwebservice';
 import path from 'path';
 import raven from 'raven';
@@ -82,11 +83,28 @@ if(app.get('env') === 'production') {
 	});
 }
 
-app.get('/', (req, res) => res.render('signup', {
-	article: req.query.article,
-	product: req.query.product,
-	mailingList: req.query.mailinglist,
-}));
+app.get('/', (req, res) => {
+	const {family, os} = useragent.parse(req.get('user-agent'));
+
+	const currentUrl = url.parse(req.url, true);
+	const autofocusUrl = url.format({
+		...currentUrl,
+		search: undefined,
+		query: {
+			...currentUrl.query,
+			autofocus: true,
+		},
+	});
+
+	res.render('signup', {
+		isAndroidFacebook: process.env.ANDROID_FORM_HACK === 'true' && family === 'Facebook' && os.family === 'Android',
+		autofocusUrl,
+		autofocus: req.query.autofocus,
+		article: req.query.article,
+		product: req.query.product,
+		mailingList: req.query.mailinglist,
+	});
+});
 app.use('/signup', (req, res, next) => { req.newsletterSignupPostNoResponse = !!req.query.form; next(); }, newsletterSignup);
 app.use('/public', express.static('public'));
 app.use('/dev', devController);

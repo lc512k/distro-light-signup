@@ -7,7 +7,8 @@
     "ANON_EMAIL_SVC_API_KEY": {"required": true},
     "ANON_EMAIL_LIST_HOST": {"required": true},
     "ANON_EMAIL_SVC_HOST": {"required": true},
-    "SENTRY_DSN": {"required": false}
+    "SENTRY_DSN": {"required": false},
+    "ANDROID_FORM_HACK": {"required": false}
   },
   "addons": [
     "papertrail"

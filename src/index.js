@@ -97,7 +97,7 @@ app.get('/', (req, res) => {
 	});
 
 	res.render('signup', {
-		isAndroidFacebook: family === 'Facebook' && os.family === 'Android',
+		isAndroidFacebook: process.env.ANDROID_FORM_HACK === 'true' && family === 'Facebook' && os.family === 'Android',
 		autofocusUrl,
 		autofocus: req.query.autofocus,
 		article: req.query.article,

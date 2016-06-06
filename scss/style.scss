@@ -12,3 +12,12 @@ $o-grid-is-silent: false;
 body {
 	margin: 0;
 }
+
+.distro-light-signup--flex-wrapper {
+	display: flex;
+	justify-content: center;
+
+	.o-email-only-signup__submit {
+		flex-shrink: 0;
+	}
+}

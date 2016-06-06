@@ -2,8 +2,10 @@
 	<div class="o-email-only-signup__visually-hidden" data-o-email-only-signup-close></div>
 	<label for="email" class="o-email-only-signup__visually-hidden">Email address:</label>
 	{{#if isAndroidFacebook}}
-	<input type="hidden" id="email" name="email" class="o-email-only-signup__email">
-	<a class="o-email-only-signup__submit" href="{{autofocusUrl}}" target="_blank">Sign up</a>
+	<div class="distro-light-signup--flex-wrapper">
+		<input type="hidden" id="email" name="email" class="o-email-only-signup__email">
+		<a data-o-grid-colspan="12" class="o-email-only-signup__submit distro-light-signup--open-external" href="{{autofocusUrl}}" target="_blank">Sign up</a>
+	</div>
 	{{else}}
 	<input data-o-grid-colspan="7" type="email" id="email" name="email" required class="o-email-only-signup__email o-forms-text" data-trackable="email" {{#if autofocus}}autofocus{{/if}}>
 	<button data-o-grid-colspan="4" type="submit" class="o-email-only-signup__submit" data-trackable="submit">Sign up</button>

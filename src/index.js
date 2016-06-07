@@ -9,10 +9,11 @@ import ftwebservice from 'express-ftwebservice';
 import path from 'path';
 import raven from 'raven';
 import os from 'os';
-import pkg from '../package.json';
 import errorhandler from 'errorhandler';
-import {env as herokuEnv} from '../app.json';
+import herokuMetadata from '@quarterto/heroku-metadata';
 
+import pkg from '../package.json';
+import {env as herokuEnv} from '../app.json';
 import {getResponseMsg} from './bower/o-email-only-signup';
 import devController from './dev';
 
@@ -50,6 +51,10 @@ app.engine('html', expressHandlebars({
 	defaultLayout: 'main',
 }));
 app.set('view engine', 'html');
+
+if(app.get('env') !== 'production') {
+	app.locals.metadata = JSON.stringify(herokuMetadata());
+}
 
 app.use(logger(process.env.LOG_FORMAT || (app.get('env') === 'development' ? 'dev' : 'combined')));
 

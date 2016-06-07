@@ -42,7 +42,6 @@ assertEnv(Object.keys(herokuEnv).filter(key => herokuEnv[key].required));
 
 const port = process.env.PORT || 1337;
 
-
 if(process.env.INJECT_SCRIPT) {
 	app.locals.injectScript = process.env.INJECT_SCRIPT;
 }
@@ -54,7 +53,7 @@ app.engine('html', expressHandlebars({
 app.set('view engine', 'html');
 
 if(app.get('env') !== 'production') {
-	app.locals.metadata = JSON.stringify(herokuMetadata());
+	app.locals.metadata = JSON.stringify(herokuMetadata(), null, 2);
 }
 
 app.use(logger(process.env.LOG_FORMAT || (app.get('env') === 'development' ? 'dev' : 'combined')));

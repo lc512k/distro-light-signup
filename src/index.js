@@ -19,6 +19,10 @@ import devController from './dev';
 
 const app = express();
 
+if(app.get('env') === 'development') {
+	require('longjohn'); // eslint-disable-line global-require
+}
+
 let ravenClient;
 
 if(app.get('env') === 'production') {
@@ -38,9 +42,6 @@ assertEnv(Object.keys(herokuEnv).filter(key => herokuEnv[key].required));
 
 const port = process.env.PORT || 1337;
 
-if(app.get('env') !== 'production') {
-	require('longjohn'); // eslint-disable-line global-require
-}
 
 if(process.env.INJECT_SCRIPT) {
 	app.locals.injectScript = process.env.INJECT_SCRIPT;

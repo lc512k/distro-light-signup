@@ -135,6 +135,10 @@ app.post('/signup', (req, res) => {
 	}
 });
 
+app.get('/signup/unsubscribe/:user', (req, res) => {
+	res.json(res.locals);
+});
+
 function redirectToNext(req, res) {
 	const nextUrl = url.format({
 		hostname: 'next.ft.com',

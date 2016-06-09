@@ -89,25 +89,34 @@ if(app.get('env') === 'production') {
 }
 
 app.get('/', (req, res) => {
-	const {family, os} = useragent.parse(req.get('user-agent'));
+	const {
+		external,
+		article,
+		product,
+		mailingList,
+	} = req.query;
+
+	const isAndroid = req.get('x-mobile-os') === 'android';
+	const showFormHack = process.env.ANDROID_FORM_HACK === 'true' && isAndroid && !external;
 
 	const currentUrl = url.parse(req.url, true);
-	const autofocusUrl = url.format({
+	const externalUrl = url.format({
 		...currentUrl,
 		search: undefined,
 		query: {
 			...currentUrl.query,
-			autofocus: true,
+			external: true,
 		},
 	});
 
+	res.set('vary', 'x-mobile-os');
 	res.render('signup', {
-		isAndroidFacebook: process.env.ANDROID_FORM_HACK === 'true' && family === 'Facebook' && os.family === 'Android',
-		autofocusUrl,
-		autofocus: req.query.autofocus,
-		article: req.query.article,
-		product: req.query.product,
-		mailingList: req.query.mailinglist,
+		showFormHack,
+		externalUrl,
+		external,
+		article,
+		product,
+		mailingList,
 	});
 });
 app.use('/signup', (req, res, next) => { req.newsletterSignupPostNoResponse = !!req.query.form; next(); }, newsletterSignup);

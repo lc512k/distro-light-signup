@@ -19,6 +19,13 @@ ESLINT_OPTS = --fix
 LINTSPACE_OPTS = -n -d tabs -l 2
 POST_SASS_OPTS = --cssPath public --postCss autoprefixer
 
+ifeq (,$(wildcard .env))
+FASTLY_OPTS = --service FASTLY_SERVICE vcl
+else
+FASTLY_OPTS = --env --service FASTLY_SERVICE vcl
+endif
+
+HEROKU_CONFIG_OPTS = -i NODE_ENV -i HEROKU
 HEROKU_CONFIG_APP = distro-light-signup-staging
 
 all: babel public/style.css public/main.js
@@ -78,12 +85,12 @@ promote:
 	heroku pipelines:promote -a distro-light-signup-staging --to distro-light-signup-prod
 
 deploy-vcl:
-	$(if $(FASTLY_APIKEY), $(call npm_bin, fastly) deploy --env --service FASTLY_SERVICE vcl)
+	$(if $(FASTLY_APIKEY), $(call npm_bin, fastly) deploy $(FASTLY_OPTS))
 
 # local config
 .env:
 ifneq ($(npm_lifecycle_event), heroku-postbuild)
-	$(call npm_bin, heroku-config-to-env) -i NODE_ENV -i HEROKU $(HEROKU_CONFIG_APP) $@
+	$(call npm_bin, heroku-config-to-env) $(HEROKU_CONFIG_OPTS) $(HEROKU_CONFIG_APP) $@
 endif
 
 .env.mk: .env

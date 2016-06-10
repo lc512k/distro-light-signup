@@ -89,9 +89,7 @@ deploy-vcl:
 
 # local config
 .env:
-ifneq ($(npm_lifecycle_event), heroku-postbuild)
 	$(call npm_bin, heroku-config-to-env) $(HEROKU_CONFIG_OPTS) $(HEROKU_CONFIG_APP) $@
-endif
 
 .env.mk: .env
 	sed 's/"//g ; s/=/:=/' < $< > $@

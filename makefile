@@ -85,7 +85,7 @@ promote:
 	heroku pipelines:promote -a distro-light-signup-staging --to distro-light-signup-prod
 
 deploy-vcl:
-	$(if $(FASTLY_APIKEY), $(call npm_bin, fastly) deploy $(FASTLY_OPTS), @echo No Fastly API key, not deploying VCL)
+	$(if $(FASTLY_APIKEY), $(call npm_bin, fastly) deploy $(FASTLY_OPTS), @echo '⤼ No Fastly API key, not deploying VCL')
 
 # local config
 .env:

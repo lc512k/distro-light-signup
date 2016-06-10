@@ -1,6 +1,6 @@
 node_modules/
 bower_components
 lib
-.env
+.env*
 public
 webpack.config.js

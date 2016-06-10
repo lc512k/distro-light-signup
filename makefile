@@ -1,4 +1,6 @@
--include .env.mk
+ifneq ($(npm_lifecycle_event), heroku-postbuild)
+	-include .env.mk
+endif
 
 SHELL := /bin/bash
 
@@ -80,7 +82,9 @@ deploy-vcl:
 
 # local config
 .env:
+ifneq ($(npm_lifecycle_event), heroku-postbuild)
 	$(call npm_bin, heroku-config-to-env) -i NODE_ENV -i HEROKU $(HEROKU_CONFIG_APP) $@
+endif
 
 .env.mk: .env
 	sed 's/"//g ; s/=/:=/' < $< > $@

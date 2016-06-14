@@ -11,6 +11,9 @@ router.get('/subscribed/:email', (req, res, next) => {
 
 router.get('/barf', (req, res, next) => next(new Error('lol')));
 
-router.get('/fastly-spoor', (req, res) => res.send(req.get('x-spoor-id')));
+router.get('/fastly-spoor', (req, res) => {
+	res.set('vary', 'x-spoor-id');
+	res.send(req.get('x-spoor-id'));
+});
 
 export default router;

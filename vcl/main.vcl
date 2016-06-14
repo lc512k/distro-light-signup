@@ -8,8 +8,8 @@ sub vcl_recv {
 		set req.http.x-mobile-os = "android";
 	}
 
-	if (req.http.Cookie ~ "spoor-id=") {
-		set req.http.x-spoor-id = regsub(req.http.Cookie, ".*(?:^|;)spoor-id=([^;]+).*", "\1");
+	if (req.http.Cookie ~ ".*(?:^|;\s*)spoor-id=([^;]+).*") {
+		set req.http.x-spoor-id = regsub(req.http.Cookie, ".*(?:^|;\s*)spoor-id=([^;]+).*", "\1");
 	}
 
 	return(lookup);

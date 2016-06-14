@@ -94,10 +94,12 @@ app.get('/', (req, res) => {
 		article,
 		product,
 		mailingList,
+		spoorId: spoorIdFromUrl,
 	} = req.query;
 
 	const isAndroid = req.get('x-mobile-os') === 'android';
 	const showFormHack = process.env.ANDROID_FORM_HACK === 'true' && isAndroid && !external;
+	const spoorIdFromHeader = req.get('x-spoor-id');
 
 	const currentUrl = url.parse(req.url, true);
 	const externalUrl = url.format({
@@ -106,10 +108,11 @@ app.get('/', (req, res) => {
 		query: {
 			...currentUrl.query,
 			external: true,
+			spoorId: spoorIdFromHeader,
 		},
 	});
 
-	res.set('vary', 'x-mobile-os');
+	res.set('vary', 'x-mobile-os, x-spoor-id');
 	res.render('signup', {
 		showFormHack,
 		externalUrl,
@@ -117,6 +120,7 @@ app.get('/', (req, res) => {
 		article,
 		product,
 		mailingList,
+		spoorId: spoorIdFromUrl,
 	});
 });
 app.use('/signup', (req, res, next) => { req.newsletterSignupPostNoResponse = !!req.query.form; next(); }, newsletterSignup);

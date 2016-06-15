@@ -120,7 +120,7 @@ app.get('/', (req, res) => {
 		article,
 		product,
 		mailingList,
-		spoorId: spoorIdFromUrl,
+		spoorIdFromUrl,
 	});
 });
 app.use('/signup', (req, res, next) => { req.newsletterSignupPostNoResponse = !!req.query.form; next(); }, newsletterSignup);

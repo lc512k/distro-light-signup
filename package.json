@@ -8,7 +8,6 @@
     "start": "nodemon lib/index.js",
     "postinstall": "make",
     "watch": "wmake",
-    "poststart": "sleep 5 && killall fswatch || true",
     "heroku-config": "make -B .env",
     "heroku-postbuild": "heroku-version-infer && package-version-sentry-release && make deploy-vcl"
   },

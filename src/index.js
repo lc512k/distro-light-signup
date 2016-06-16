@@ -112,6 +112,10 @@ app.get('/', (req, res) => {
 		},
 	});
 
+	if(app.locals.metadata) {
+		res.locals.metadata = JSON.stringify(Object.assign(JSON.parse(app.locals.metadata), {spoorIdFromHeader, spoorIdFromUrl}), null, 2);
+	}
+
 	res.set('vary', 'x-mobile-os, x-spoor-id');
 	res.render('signup', {
 		showFormHack,

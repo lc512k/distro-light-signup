@@ -93,7 +93,7 @@ app.get('/', (req, res) => {
 		external,
 		article,
 		product,
-		mailingList,
+		mailinglist: mailingList,
 		spoorId: spoorIdFromUrl,
 	} = req.query;
 

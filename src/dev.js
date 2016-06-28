@@ -16,4 +16,8 @@ router.get('/fastly-spoor', (req, res) => {
 	res.send(req.get('x-spoor-id'));
 });
 
+router.get('/now', (req, res) => {
+	res.send(new Date());
+});
+
 export default router;

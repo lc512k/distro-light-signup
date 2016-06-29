@@ -101,31 +101,42 @@ app.get('/', (req, res) => {
 	const showFormHack = process.env.ANDROID_FORM_HACK === 'true' && isAndroid && !external;
 	const spoorIdFromHeader = req.get('x-spoor-id');
 
-	const currentUrl = url.parse(req.url, true);
-	const externalUrl = url.format({
-		...currentUrl,
-		search: undefined,
-		query: {
-			...currentUrl.query,
-			external: true,
-			spoorId: spoorIdFromHeader,
-		},
-	});
+	if(showFormHack) {
+		const currentUrl = url.parse(req.url, true);
+		const externalUrl = url.format({
+			...currentUrl,
+			search: undefined,
+			query: {
+				...currentUrl.query,
+				external: true,
+				spoorId: spoorIdFromHeader,
+			},
+		});
 
-	if(app.locals.metadata) {
-		res.locals.metadata = JSON.stringify(Object.assign(JSON.parse(app.locals.metadata), {spoorIdFromHeader, spoorIdFromUrl}), null, 2);
+		if(app.locals.metadata) {
+			res.locals.metadata = JSON.stringify(Object.assign(JSON.parse(app.locals.metadata), {spoorIdFromHeader, spoorIdFromUrl}), null, 2);
+		}
+
+		res.render('signup', {
+			showFormHack,
+			externalUrl,
+			external,
+			article,
+			product,
+			mailingList,
+			spoorIdFromUrl,
+		});
+	} else {
+		res.render('signup', {
+			external,
+			article,
+			product,
+			mailingList,
+			spoorIdFromUrl,
+		});
 	}
 
 	res.set('vary', 'x-mobile-os, x-spoor-id');
-	res.render('signup', {
-		showFormHack,
-		externalUrl,
-		external,
-		article,
-		product,
-		mailingList,
-		spoorIdFromUrl,
-	});
 });
 app.use('/signup', (req, res, next) => { req.newsletterSignupPostNoResponse = !!req.query.form; next(); }, newsletterSignup);
 app.use('/public', express.static('public'));

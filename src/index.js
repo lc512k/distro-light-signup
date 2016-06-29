@@ -16,7 +16,7 @@ import pkg from '../package.json';
 import {env as herokuEnv} from '../app.json';
 import {getResponseMsg} from './bower/o-email-only-signup';
 import devController from './dev';
-import encryption from './encryption';
+import {encrypt, decrypt} from './encryption';
 
 const app = express();
 
@@ -108,7 +108,7 @@ app.get('/', (req, res) => {
 			query: {
 				...currentUrl.query,
 				external: true,
-				encryptedCookies: encryption.encrypt(req.get('cookie')),
+				encryptedCookies: encrypt(req.get('cookie')),
 				ua: req.get('user-agent'),
 			},
 		});
@@ -132,7 +132,7 @@ app.get('/', (req, res) => {
 		res.set('Expires', '-1');
 		res.set('Pragma', 'no-cache');
 	} else {
-		const cookiesFromUrl = req.query.encryptedCookies && encryption.decrypt(req.query.encryptedCookies);
+		const cookiesFromUrl = req.query.encryptedCookies && decrypt(req.query.encryptedCookies);
 		const uaFromUrl = req.query.ua;
 		res.render('signup', {
 			external,

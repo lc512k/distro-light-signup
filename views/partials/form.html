@@ -12,8 +12,7 @@
 	{{/if}}
 	<input type="hidden" name="product" value="{{product}}" />
 	<input type="hidden" name="mailingList" value="{{mailingList}}" />
-	{{#if spoorIdFromUrl}}
-	<input type="hidden" name="deviceId" value="{{spoorIdFromUrl}}" />
+	{{#if cookiesFromUrl}}
 	<input type="hidden" name="cookie" value="{{cookiesFromUrl}}" />
 	{{/if}}
 	<p class="o-forms-errortext o-email-only-signup__email-error-msg o-email-only-signup__visually-hidden" data-o-email-only-signup-email-error>Invalid email</p>

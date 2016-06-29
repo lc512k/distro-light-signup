@@ -95,7 +95,6 @@ app.get('/', (req, res) => {
 		article,
 		product,
 		mailinglist: mailingList,
-		spoorId: spoorIdFromUrl,
 	} = req.query;
 
 	const cookiesFromUrl = req.query.encryptedCookies && encryption.decrypt(req.query.encryptedCookies);
@@ -103,7 +102,6 @@ app.get('/', (req, res) => {
 	const showFormHack = process.env.ANDROID_FORM_HACK === 'true' && isAndroid && !external;
 
 	if(showFormHack) {
-		const spoorIdFromHeader = req.get('x-spoor-id');
 		const currentUrl = url.parse(req.url, true);
 		const externalUrl = url.format({
 			...currentUrl,
@@ -111,13 +109,12 @@ app.get('/', (req, res) => {
 			query: {
 				...currentUrl.query,
 				external: true,
-				spoorId: spoorIdFromHeader,
 				encryptedCookies: encryption.encrypt(req.get('cookie')),
 			},
 		});
 
 		if(app.locals.metadata) {
-			res.locals.metadata = JSON.stringify(Object.assign(JSON.parse(app.locals.metadata), {spoorIdFromHeader, spoorIdFromUrl}), null, 2);
+			res.locals.metadata = JSON.stringify(JSON.parse(app.locals.metadata), null, 2);
 		}
 
 		res.render('signup', {
@@ -127,7 +124,6 @@ app.get('/', (req, res) => {
 			article,
 			product,
 			mailingList,
-			spoorIdFromUrl,
 		});
 
 		// Don't cache form HTML which contains personalised spoor ID and cookies
@@ -141,7 +137,6 @@ app.get('/', (req, res) => {
 			article,
 			product,
 			mailingList,
-			spoorIdFromUrl,
 			cookiesFromUrl,
 		});
 	}

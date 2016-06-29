@@ -97,7 +97,6 @@ app.get('/', (req, res) => {
 		mailinglist: mailingList,
 	} = req.query;
 
-	const cookiesFromUrl = req.query.encryptedCookies && encryption.decrypt(req.query.encryptedCookies);
 	const isAndroid = req.get('x-mobile-os') === 'android';
 	const showFormHack = process.env.ANDROID_FORM_HACK === 'true' && isAndroid && !external;
 
@@ -110,6 +109,7 @@ app.get('/', (req, res) => {
 				...currentUrl.query,
 				external: true,
 				encryptedCookies: encryption.encrypt(req.get('cookie')),
+				ua: req.get('user-agent'),
 			},
 		});
 
@@ -132,12 +132,15 @@ app.get('/', (req, res) => {
 		res.set('Expires', '-1');
 		res.set('Pragma', 'no-cache');
 	} else {
+		const cookiesFromUrl = req.query.encryptedCookies && encryption.decrypt(req.query.encryptedCookies);
+		const uaFromUrl = req.query.ua;
 		res.render('signup', {
 			external,
 			article,
 			product,
 			mailingList,
 			cookiesFromUrl,
+			uaFromUrl,
 		});
 	}
 

@@ -16,6 +16,7 @@ import pkg from '../package.json';
 import {env as herokuEnv} from '../app.json';
 import {getResponseMsg} from './bower/o-email-only-signup';
 import devController from './dev';
+import {encrypt, decrypt} from './encryption';
 
 const app = express();
 
@@ -94,38 +95,56 @@ app.get('/', (req, res) => {
 		article,
 		product,
 		mailinglist: mailingList,
-		spoorId: spoorIdFromUrl,
 	} = req.query;
 
 	const isAndroid = req.get('x-mobile-os') === 'android';
 	const showFormHack = process.env.ANDROID_FORM_HACK === 'true' && isAndroid && !external;
-	const spoorIdFromHeader = req.get('x-spoor-id');
 
-	const currentUrl = url.parse(req.url, true);
-	const externalUrl = url.format({
-		...currentUrl,
-		search: undefined,
-		query: {
-			...currentUrl.query,
-			external: true,
-			spoorId: spoorIdFromHeader,
-		},
-	});
+	if(showFormHack) {
+		const currentUrl = url.parse(req.url, true);
+		const externalUrl = url.format({
+			...currentUrl,
+			search: undefined,
+			query: {
+				...currentUrl.query,
+				external: true,
+				encryptedCookies: encrypt(req.get('cookie')),
+				ua: req.get('user-agent'),
+			},
+		});
 
-	if(app.locals.metadata) {
-		res.locals.metadata = JSON.stringify(Object.assign(JSON.parse(app.locals.metadata), {spoorIdFromHeader, spoorIdFromUrl}), null, 2);
+		if(app.locals.metadata) {
+			res.locals.metadata = JSON.stringify(JSON.parse(app.locals.metadata), null, 2);
+		}
+
+		res.render('signup', {
+			showFormHack,
+			externalUrl,
+			external,
+			article,
+			product,
+			mailingList,
+		});
+
+		// Don't cache form HTML which contains personalised spoor ID and cookies
+		// (see 'Vary: x-mobile-os', below).
+		res.set('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+		res.set('Expires', '-1');
+		res.set('Pragma', 'no-cache');
+	} else {
+		const cookiesFromUrl = req.query.encryptedCookies && decrypt(req.query.encryptedCookies);
+		const uaFromUrl = req.query.ua;
+		res.render('signup', {
+			external,
+			article,
+			product,
+			mailingList,
+			cookiesFromUrl,
+			uaFromUrl,
+		});
 	}
 
-	res.set('vary', 'x-mobile-os, x-spoor-id');
-	res.render('signup', {
-		showFormHack,
-		externalUrl,
-		external,
-		article,
-		product,
-		mailingList,
-		spoorIdFromUrl,
-	});
+	res.set('vary', 'x-mobile-os');
 });
 app.use('/signup', (req, res, next) => { req.newsletterSignupPostNoResponse = !!req.query.form; next(); }, newsletterSignup);
 app.use('/public', express.static('public'));

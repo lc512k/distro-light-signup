@@ -16,6 +16,7 @@ import pkg from '../package.json';
 import {env as herokuEnv} from '../app.json';
 import {getResponseMsg} from './bower/o-email-only-signup';
 import devController from './dev';
+import encryption from './encryption';
 
 const app = express();
 
@@ -97,6 +98,7 @@ app.get('/', (req, res) => {
 		spoorId: spoorIdFromUrl,
 	} = req.query;
 
+	const cookiesFromUrl = req.query.encryptedCookies && encryption.decrypt(req.query.encryptedCookies);
 	const isAndroid = req.get('x-mobile-os') === 'android';
 	const showFormHack = process.env.ANDROID_FORM_HACK === 'true' && isAndroid && !external;
 	const spoorIdFromHeader = req.get('x-spoor-id');
@@ -110,6 +112,7 @@ app.get('/', (req, res) => {
 				...currentUrl.query,
 				external: true,
 				spoorId: spoorIdFromHeader,
+				encryptedCookies: encryption.encrypt(req.get('cookie')),
 			},
 		});
 
@@ -133,6 +136,7 @@ app.get('/', (req, res) => {
 			product,
 			mailingList,
 			spoorIdFromUrl,
+			cookiesFromUrl,
 		});
 	}
 

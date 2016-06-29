@@ -10,7 +10,6 @@ import path from 'path';
 import raven from 'raven';
 import os from 'os';
 import errorhandler from 'errorhandler';
-import herokuMetadata from '@quarterto/heroku-metadata';
 
 import pkg from '../package.json';
 import {env as herokuEnv} from '../app.json';
@@ -52,10 +51,6 @@ app.engine('html', expressHandlebars({
 	defaultLayout: 'main',
 }));
 app.set('view engine', 'html');
-
-if(app.get('env') !== 'production') {
-	app.locals.metadata = JSON.stringify(herokuMetadata(), null, 2);
-}
 
 app.use(logger(process.env.LOG_FORMAT || (app.get('env') === 'development' ? 'dev' : 'combined')));
 
@@ -112,10 +107,6 @@ app.get('/', (req, res) => {
 				ua: req.get('user-agent'),
 			},
 		});
-
-		if(app.locals.metadata) {
-			res.locals.metadata = JSON.stringify(JSON.parse(app.locals.metadata), null, 2);
-		}
 
 		res.render('signup', {
 			showFormHack,

@@ -1,8 +1,9 @@
-// See https://github.com/chris-rock/node-crypto-examples
-const crypto = require('crypto');
+import crypto from 'crypto';
+
 const algorithm = 'aes-256-ctr';
 const password = process.env.ENCRYPTION_PASSWORD;
 
+// See https://github.com/chris-rock/node-crypto-examples
 module.exports.encrypt = text => {
 	const cipher = crypto.createCipher(algorithm, password);
 	let crypted = cipher.update(text, 'utf8', 'base64');

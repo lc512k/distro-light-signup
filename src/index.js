@@ -101,9 +101,9 @@ app.get('/', (req, res) => {
 	const cookiesFromUrl = req.query.encryptedCookies && encryption.decrypt(req.query.encryptedCookies);
 	const isAndroid = req.get('x-mobile-os') === 'android';
 	const showFormHack = process.env.ANDROID_FORM_HACK === 'true' && isAndroid && !external;
-	const spoorIdFromHeader = req.get('x-spoor-id');
 
 	if(showFormHack) {
+		const spoorIdFromHeader = req.get('x-spoor-id');
 		const currentUrl = url.parse(req.url, true);
 		const externalUrl = url.format({
 			...currentUrl,

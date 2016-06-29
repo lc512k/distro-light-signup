@@ -129,6 +129,12 @@ app.get('/', (req, res) => {
 			mailingList,
 			spoorIdFromUrl,
 		});
+
+		// Don't cache form HTML which contains personalised spoor ID and cookies
+		// (see 'Vary: x-mobile-os', below).
+		res.set('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+		res.set('Expires', '-1');
+		res.set('Pragma', 'no-cache');
 	} else {
 		res.render('signup', {
 			external,
@@ -140,7 +146,7 @@ app.get('/', (req, res) => {
 		});
 	}
 
-	res.set('vary', 'x-mobile-os, x-spoor-id');
+	res.set('vary', 'x-mobile-os');
 });
 app.use('/signup', (req, res, next) => { req.newsletterSignupPostNoResponse = !!req.query.form; next(); }, newsletterSignup);
 app.use('/public', express.static('public'));

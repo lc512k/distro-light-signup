@@ -4,7 +4,6 @@ import logger from 'morgan';
 import expressHandlebars from 'express-handlebars';
 import assertEnv from '@quarterto/assert-env';
 import url from 'url';
-import useragent from 'useragent';
 import ftwebservice from 'express-ftwebservice';
 import path from 'path';
 import raven from 'raven';

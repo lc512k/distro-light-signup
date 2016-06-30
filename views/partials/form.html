@@ -1,22 +1,41 @@
 <form class="o-email-only-signup__form" method="post" action="/signup?form=1{{#if article}}&amp;article={{article}}{{/if}}" data-o-email-only-signup-form>
 	<div class="o-email-only-signup__visually-hidden" data-o-email-only-signup-close></div>
-	<label for="email" class="o-email-only-signup__visually-hidden">Email address:</label>
-	{{#if showFormHack}}
-	<div class="distro-light-signup--flex-wrapper">
-		<a data-o-grid-colspan="12" class="o-email-only-signup__submit distro-light-signup--open-external" href="{{externalUrl}}" target="_blank">Sign up</a>
-	</div>
-	{{else}}
-	<input data-o-grid-colspan="7" type="email" id="email" name="email" required class="o-email-only-signup__email o-forms-text" data-trackable="email" {{#if external}}autofocus{{/if}}>
-	<button data-o-grid-colspan="4" type="submit" class="o-email-only-signup__submit" data-trackable="submit">Sign up</button>
-	{{/if}}
-	<input type="hidden" name="product" value="{{product}}" />
-	<input type="hidden" name="mailingList" value="{{mailingList}}" />
-	{{#if cookiesFromUrl}}
-	<input type="hidden" name="cookie" value="{{cookiesFromUrl}}" />
-	{{/if}}
-	{{#if uaFromUrl}}
-	<input type="hidden" name="ua" value="{{uaFromUrl}}" />
-	{{/if}}
-	<p class="o-forms-errortext o-email-only-signup__email-error-msg o-email-only-signup__visually-hidden" data-o-email-only-signup-email-error>Invalid email</p>
-	<p class="o-email-only-signup__no-spam">By clicking Sign up you confirm that you have read and agree to the <a target="_blank" href="http://help.ft.com/tools-services/ft-com-terms-and-conditions">terms and conditions</a>, <a target="_blank" href="http://help.ft.com/tools-services/how-the-ft-manages-cookies-on-its-websites">cookie policy</a> and <a target="_blank" href="http://help.ft.com/tools-services/financial-times-privacy-policy">privacy policy</a>.<br /><strong>Unsubscribe at any time.</strong></p>
+		{{#if showFormHack}}
+		<div class="distro-light-signup--flex-wrapper">
+			<a data-o-grid-colspan="12" class="o-email-only-signup__submit distro-light-signup--open-external" href="{{externalUrl}}" target="_blank">Send me free stories for 1 week</a>
+		</div>
+		{{else}}
+		<div class="o-email-only-signup__form-group">
+			<label for="email" class="o-email-only-signup__visually-hidden">Email address:</label>
+			<input
+				type="email"
+				id="email"
+				name="email"
+				required
+				class="o-email-only-signup__email o-forms-text"
+				data-trackable="email"
+				placeholder="Enter your email address"
+				{{#if external}}autofocus{{/if}}>
+				<p
+					class="o-forms-errortext o-email-only-signup__email-error-msg o-email-only-signup__visually-hidden" data-o-email-only-signup-email-error>
+					Invalid email
+				</p>
+		</div>
+
+		<button type="submit" class="o-email-only-signup__submit" data-trackable="submit">Send me free stories for 1 week</button>
+		{{/if}}
+
+		<input type="hidden" name="product" value="{{product}}" />
+		<input type="hidden" name="mailingList" value="{{mailingList}}" />
+
+		{{#if cookiesFromUrl}}
+			<input type="hidden" name="cookie" value="{{cookiesFromUrl}}" />
+		{{/if}}
+		{{#if uaFromUrl}}
+			<input type="hidden" name="ua" value="{{uaFromUrl}}" />
+		{{/if}}
+
+		<p class="o-email-only-signup__no-spam">
+			By clicking Sign up you confirm that you have read and agree to the <a target="_blank" href="http://help.ft.com/tools-services/ft-com-terms-and-conditions">terms and conditions</a>, <a target="_blank" href="http://help.ft.com/tools-services/how-the-ft-manages-cookies-on-its-websites">cookie policy</a> and <a target="_blank" href="http://help.ft.com/tools-services/financial-times-privacy-policy">privacy policy</a>.<br /><strong>Unsubscribe at any time.</strong>
+		</p>
 </form>

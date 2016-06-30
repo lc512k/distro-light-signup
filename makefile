@@ -9,7 +9,8 @@ SRC = src
 
 EMAIL_ONLY_SIGNUP = bower_components/o-email-only-signup/src/email-only-signup.js
 
-SRC_FILES = $(shell find $(SRC) -name '*.js') $(EMAIL_ONLY_SIGNUP) package.json app.json
+JS_FILES = $(shell find $(SRC) -name '*.js')
+SRC_FILES = $(JS_FILES) $(EMAIL_ONLY_SIGNUP) package.json app.json
 BUILD_FILES = $(patsubst %, $(BUILD)/%, $(SRC_FILES))
 BUILD_DIRS = $(patsubst %/, %, $(dir $(BUILD_FILES)))
 
@@ -76,12 +77,12 @@ clean:
 
 # test things
 lintspace: $(LINTSPACE_FILES)
-	$(call npm_bin, lintspace) $(LINTSPACE_OPTS) $^
+	$(call npm_bin, lintspaces) $(LINTSPACE_OPTS) $^
 
-lint: $(SRC_FILES) $(TEST_FILES) $(TEST_UTILS)
+lint: $(JS_FILES) $(TEST_FILES) $(TEST_UTILS)
 	$(call npm_bin, eslint) $(ESLINT_OPTS) $^
 
-test: lint lintspace babel
+test: lint lintspace
 
 # heroku and fastly
 promote:

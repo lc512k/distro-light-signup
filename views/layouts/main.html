@@ -10,7 +10,9 @@
 	{{{body}}}
 
 <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch&amp;flags=gated&amp;unknown=polyfill"></script>
+{{#unless showFormHack}}
 <script src="/public/main.js"></script>
+{{/unless}}
 {{#if injectScript}}
 <script src="{{injectScript}}"></script>
 {{/if}}

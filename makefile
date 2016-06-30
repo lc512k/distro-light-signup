@@ -33,11 +33,6 @@ HEROKU_CONFIG_APP = distro-light-signup-staging
 
 all: babel public/style.css public/main.js
 
-debug:
-	@echo SRC_FILES $(SRC_FILES)
-	@echo BUILD_FILES $(BUILD_FILES)
-	@echo BUILD_DIRS $(BUILD_DIRS)
-
 # server build
 babel: $(BUILD_DIRS) $(BUILD_FILES)
 

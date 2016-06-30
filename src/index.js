@@ -4,7 +4,6 @@ import logger from 'morgan';
 import expressHandlebars from 'express-handlebars';
 import assertEnv from '@quarterto/assert-env';
 import url from 'url';
-import useragent from 'useragent';
 import ftwebservice from 'express-ftwebservice';
 import path from 'path';
 import raven from 'raven';
@@ -13,7 +12,7 @@ import errorhandler from 'errorhandler';
 
 import pkg from '../package.json';
 import {env as herokuEnv} from '../app.json';
-import {getResponseMsg} from './bower/o-email-only-signup';
+import {getResponseMsg} from '../bower_components/o-email-only-signup/src/email-only-signup';
 import devController from './dev';
 import {encrypt, decrypt} from './encryption';
 

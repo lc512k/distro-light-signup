@@ -180,6 +180,7 @@ function redirectToNext(req, res) {
 
 app.get('/products', redirectToNext);
 app.get('/login', redirectToNext);
+app.get('/newsletters', redirectToNext);
 
 if(app.get('env') === 'development') {
 	app.use(errorhandler());

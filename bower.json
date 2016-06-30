@@ -6,11 +6,11 @@
   "homepage": "https://github.com/quarterto/distro-light-signup",
   "private": true,
   "dependencies": {
-    "o-email-only-signup": "2.3.1",
+    "o-email-only-signup": "^3.2.0",
     "o-fonts": "^2.1.2",
     "o-grid": "^4.0.9"
   },
   "resolutions": {
-    "o-email-only-signup": "2.3.1"
+    "o-email-only-signup": "^3.2.0"
   }
 }

@@ -25,3 +25,9 @@ body {
 .distro-light-signup--open-external {
   line-height: 26px;
 }
+
+.o-email-only-signup.o-email-only-signup {
+	// o-email-only-signup assumes the parent component can set side padding, but in FIA
+	// we have no control. Override manually here instead
+	padding: 15px 15px 0;
+}

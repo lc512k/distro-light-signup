@@ -9,7 +9,8 @@
     "postinstall": "make",
     "watch": "wmake",
     "heroku-config": "make -B .env",
-    "heroku-postbuild": "heroku-version-infer && package-version-sentry-release && make deploy-vcl"
+    "heroku-postbuild": "heroku-version-infer && package-version-sentry-release && make deploy-vcl",
+    "test": "make test"
   },
   "repository": {
     "type": "git",

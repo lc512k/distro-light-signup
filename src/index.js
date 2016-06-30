@@ -12,7 +12,7 @@ import errorhandler from 'errorhandler';
 
 import pkg from '../package.json';
 import {env as herokuEnv} from '../app.json';
-import {getResponseMsg} from './bower/o-email-only-signup';
+import {getResponseMsg} from '../bower_components/o-email-only-signup/src/email-only-signup';
 import devController from './dev';
 import {encrypt, decrypt} from './encryption';
 

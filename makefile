@@ -4,12 +4,14 @@ endif
 
 SHELL := /bin/bash
 
+BUILD = build
 SRC = src
-LIB = lib
 
-SRC_FILES = $(shell find $(SRC) -name '*.js')
-LIB_FILES = $(patsubst $(SRC)/%.js, $(LIB)/%.js, $(SRC_FILES)) $(LIB)/bower/o-email-only-signup.js
-LIB_DIRS = $(dir $(LIB_FILES))
+EMAIL_ONLY_SIGNUP = bower_components/o-email-only-signup/src/email-only-signup.js
+
+SRC_FILES = $(shell find $(SRC) -name '*.js') $(EMAIL_ONLY_SIGNUP) package.json app.json
+BUILD_FILES = $(patsubst %, $(BUILD)/%, $(SRC_FILES))
+BUILD_DIRS = $(patsubst %/, %, $(dir $(BUILD_FILES)))
 
 npm_bin = $(addprefix $(shell npm bin)/, $(1))
 
@@ -30,16 +32,15 @@ HEROKU_CONFIG_APP = distro-light-signup-staging
 
 all: babel public/style.css public/main.js
 
+debug:
+	@echo SRC_FILES $(SRC_FILES)
+	@echo BUILD_FILES $(BUILD_FILES)
+	@echo BUILD_DIRS $(BUILD_DIRS)
+
 # server build
-babel: $(LIB) $(LIB_DIRS) $(LIB_FILES)
+babel: $(BUILD_DIRS) $(BUILD_FILES)
 
-$(LIB)/bower: bower_components
-	mkdir -p $@
-
-$(LIB)/bower/o-email-only-signup.js: bower_components/o-email-only-signup/src/email-only-signup.js
-	$(call npm_bin, babel) $(BABEL_OPTS) $< -o $@
-
-$(LIB)/%.js: $(SRC)/%.js
+$(BUILD)/%.js: ./%.js
 	$(call npm_bin, babel) $(BABEL_OPTS) $< -o $@
 
 # client build
@@ -50,24 +51,28 @@ public/style.css: scss/style.scss bower_components
 	$(call npm_bin, post-sass) $(POST_SASS_OPTS)
 
 # installation
-bower_components: bower.json
+bower_components/%: bower.json
 	$(call npm_bin, bower) install
 
 # utility
-$(LIB)/%: $(SRC)/% clean-$(LIB)/%
+
+$(BUILD):
 	mkdir -p $@
 
-$(LIB): $(SRC)
+$(BUILD)/%.json: %.json
+	cp $< $@
+
+$(BUILD)/%: % clean-$(BUILD)/%
 	mkdir -p $@
 
-clean-$(LIB)/%:
-	$(eval LIB_THINGS := $(patsubst $(LIB)/%, %, $(wildcard $(LIB)/$*/*)))
-	$(eval SRC_THINGS := $(patsubst $(SRC)/%, %, $(wildcard $(SRC)/$*/*)))
-	$(eval TO_DELETE := $(addprefix $(LIB)/, $(shell comm -23 <(echo $(LIB_THINGS) | tr ' ' '\n' | sort) <(echo $(SRC_THINGS) | tr ' ' '\n' | sort))))
+clean-$(BUILD)/%:
+	$(eval BUILD_THINGS := $(patsubst $(BUILD)/%, %, $(wildcard $(BUILD)/$*/*)))
+	$(eval SRC_THINGS := $(patsubst ./%, %, $(wildcard ./$*/*)))
+	$(eval TO_DELETE := $(addprefix $(BUILD)/, $(shell comm -23 <(echo $(BUILD_THINGS) | tr ' ' '\n' | sort) <(echo $(SRC_THINGS) | tr ' ' '\n' | sort))))
 	$(if $(TO_DELETE), rm $(TO_DELETE))
 
 clean:
-	rm -rf $(LIB)
+	rm -rf $(BUILD)
 
 # test things
 lintspace: $(LINTSPACE_FILES)

@@ -2,10 +2,10 @@
   "name": "distro-light-signup",
   "version": "0.0.0-development",
   "description": "",
-  "main": "lib/index.js",
+  "main": "build/src/index.js",
   "scripts": {
     "prestart": "wmake &",
-    "start": "nodemon lib/index.js",
+    "start": "nodemon $npm_package_main",
     "postinstall": "make",
     "watch": "wmake",
     "heroku-config": "make -B .env",

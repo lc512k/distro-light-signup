@@ -4,3 +4,4 @@ lib
 .env*
 public
 webpack.config.js
+build

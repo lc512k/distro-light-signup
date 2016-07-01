@@ -2,20 +2,20 @@ import newsletterSignup from '@financial-times/newsletter-signup';
 import express from 'express';
 import logger from 'morgan';
 import expressHandlebars from 'express-handlebars';
+import assertHerokuEnv from '@quarterto/assert-heroku-env';
 import assertEnv from '@quarterto/assert-env';
+import readParentJson from '@quarterto/read-parent-json';
 import url from 'url';
 import ftwebservice from 'express-ftwebservice';
-import path from 'path';
 import raven from 'raven';
 import os from 'os';
 import errorhandler from 'errorhandler';
 
-import pkg from '../package.json';
-import {env as herokuEnv} from '../app.json';
 import {getResponseMsg} from '../bower_components/o-email-only-signup/src/email-only-signup';
 import devController from './dev';
 import {encrypt, decrypt} from './encryption';
 
+const pkg = readParentJson('package.json', __dirname);
 const app = express();
 
 if(app.get('env') === 'development') {
@@ -37,7 +37,7 @@ if(app.get('env') === 'production') {
 	ravenClient.patchGlobal(() => process.exit(1));
 }
 
-assertEnv(Object.keys(herokuEnv).filter(key => herokuEnv[key].required));
+assertHerokuEnv();
 
 const port = process.env.PORT || 1337;
 
@@ -54,13 +54,14 @@ app.set('view engine', 'html');
 app.use(logger(process.env.LOG_FORMAT || (app.get('env') === 'development' ? 'dev' : 'combined')));
 
 ftwebservice(app, {
-	manifestPath: path.join(__dirname, '../package.json'),
 	about: {
 		schemaVersion: 1,
 		name: 'distro-light-signup',
 		purpose: 'Service to display a light signup form and handle email subscription',
 		audience: 'public',
 		primaryUrl: 'https://distro-light-signup.ft.com',
+		appVersion: pkg.version,
+		dateDeployed: process.env.HEROKU_RELEASE_CREATED_AT || new Date(),
 		contacts: [
 			{
 				name: 'Matthew Brennan',

@@ -10,7 +10,7 @@ SRC = src
 EMAIL_ONLY_SIGNUP = bower_components/o-email-only-signup/src/email-only-signup.js
 
 JS_FILES = $(shell find $(SRC) -name '*.js')
-SRC_FILES = $(JS_FILES) $(EMAIL_ONLY_SIGNUP) package.json app.json
+SRC_FILES = $(JS_FILES) $(EMAIL_ONLY_SIGNUP)
 BUILD_FILES = $(patsubst %, $(BUILD)/%, $(SRC_FILES))
 BUILD_DIRS = $(patsubst %/, %, $(dir $(BUILD_FILES)))
 
@@ -54,9 +54,6 @@ bower_components/%: bower.json
 
 $(BUILD):
 	mkdir -p $@
-
-$(BUILD)/%.json: %.json
-	cp $< $@
 
 $(BUILD)/%: % clean-$(BUILD)/%
 	mkdir -p $@

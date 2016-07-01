@@ -11,6 +11,12 @@ $o-grid-is-silent: false;
 
 body {
 	margin: 0;
+
+	// Ensure the .o-email-only-signup div is allowed to expand to full height
+	position: absolute;
+	bottom: 0;
+	top: 0;
+	display: flex;
 }
 
 .distro-light-signup--flex-wrapper {

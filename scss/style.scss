@@ -14,8 +14,7 @@ body {
 
 	// Ensure the .o-email-only-signup div is allowed to expand to full height
 	position: absolute;
-	bottom: 0;
-	top: 0;
+	min-height: 100%;
 	display: flex;
 }
 

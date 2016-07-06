@@ -9,7 +9,7 @@
     "postinstall": "make",
     "watch": "wmake",
     "heroku-config": "make -B .env",
-    "heroku-postbuild": "heroku-version-infer && package-version-sentry-release && make deploy-vcl",
+    "heroku-postbuild": "heroku-version-infer && package-version-sentry-release && package-version-jira-release && make deploy-vcl",
     "test": "make test"
   },
   "repository": {
@@ -30,6 +30,7 @@
     "@quarterto/assert-env": "^1.3.0",
     "@quarterto/assert-heroku-env": "^1.1.0",
     "@quarterto/heroku-version-infer": "^1.0.0",
+    "@quarterto/package-version-jira-release": "^1.1.0",
     "@quarterto/package-version-sentry-release": "^1.4.0",
     "@quarterto/post-sass": "^1.1.3",
     "@quarterto/read-parent-json": "^1.1.0",

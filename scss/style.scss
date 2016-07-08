@@ -85,7 +85,7 @@ body {
 }
 
 .o-email-only-signup__no-spam {
-	@include responsive(3.5vw, $min: 9px, $max: 14px);
+	@include responsive(3.75vw, $min: 11px, $max: 15px);
 }
 
 .o-email-only-signup__text,

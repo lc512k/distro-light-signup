@@ -29,9 +29,6 @@ $o-grid-is-silent: false;
 	}
 }
 
-$form-stretch-height: 75vw;
-$form-affine-height: 40px;
-
 html, body {
 	height: 100%;
 }
@@ -51,7 +48,6 @@ body {
 
 .distro-light-signup--body-wrapper {
 	@extend %vertical-center;
-	height: calc(#{$form-affine-height} + #{$form-stretch-height});
 }
 
 .distro-light-signup--flex-wrapper {
@@ -89,7 +85,7 @@ body {
 }
 
 .o-email-only-signup__no-spam {
-	@include responsive(3.5vw, $min: 9px, $max: 14px);
+	@include responsive(3.75vw, $min: 11px, $max: 15px);
 }
 
 .o-email-only-signup__text,

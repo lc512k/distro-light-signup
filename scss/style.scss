@@ -9,13 +9,42 @@ $o-grid-is-silent: false;
 @include oFontsInclude(MetricWeb, light);
 @include oFontsInclude(MetricWeb, bold);
 
+@function pxAndVwToViewport($vw, $px) {
+	@return $px * 100vw / $vw;
+}
+
+@mixin responsive($size, $min: 0, $max: 0, $prop: 'font-size') {
+	#{$prop}: $size;
+
+	@if $min != 0 {
+		@media (max-width: pxAndVwToViewport($size, $min)) {
+			#{$prop}: $min;
+		}
+	}
+
+	@if $max != 0 {
+		@media (min-width: pxAndVwToViewport($size, $max)) {
+			#{$prop}: $max;
+		}
+	}
+}
+
+$body-max-height: 330px;
+$body-stretch-height: 75vw;
+$body-affine-height: 40px;
+
 body {
 	margin: 0;
-
-	// Ensure the .o-email-only-signup div is allowed to expand to full height
-	position: absolute;
-	min-height: 100%;
+	height: $body-max-height;
 	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	padding: 15px 0;
+	box-sizing: border-box;
+}
+
+.distro-light-signup--body-wrapper {
+	height: calc(#{$body-affine-height} + #{$body-stretch-height});
 }
 
 .distro-light-signup--flex-wrapper {
@@ -31,8 +60,44 @@ body {
   line-height: 26px;
 }
 
+.o-email-only-signup {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+}
+
 .o-email-only-signup.o-email-only-signup {
 	// o-email-only-signup assumes the parent component can set side padding, but in FIA
 	// we have no control. Override manually here instead
 	padding: 15px 15px 0;
+	margin: 0;
+}
+
+.o-email-only-signup__heading {
+	@include responsive(6vw, $min: 15px, $max: 24px);
+}
+
+.o-email-only-signup__email,
+.o-email-only-signup__submit,
+.o-email-only-signup__text {
+	@include responsive(4.5vw, $min: 13.5px, $max: 18px);
+}
+
+.o-email-only-signup__no-spam {
+	@include responsive(3.5vw, $min: 9px, $max: 14px);
+}
+
+.o-email-only-signup__text,
+.o-email-only-signup__no-spam {
+	line-height: 1.1;
+}
+
+.o-email-only-signup__heading,
+.o-email-only-signup__email,
+.o-email-only-signup__submit {
+	line-height: 1;
+}
+
+.o-email-only-signup__secondary {
+	@include responsive(4vw, $prop: 'margin-top', $min: 8px, $max: 16px);
 }

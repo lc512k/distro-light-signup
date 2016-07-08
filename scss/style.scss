@@ -29,9 +29,6 @@ $o-grid-is-silent: false;
 	}
 }
 
-$form-stretch-height: 75vw;
-$form-affine-height: 40px;
-
 html, body {
 	height: 100%;
 }
@@ -51,7 +48,6 @@ body {
 
 .distro-light-signup--body-wrapper {
 	@extend %vertical-center;
-	height: calc(#{$form-affine-height} + #{$form-stretch-height});
 }
 
 .distro-light-signup--flex-wrapper {

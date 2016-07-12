@@ -16,7 +16,7 @@ BUILD_DIRS = $(patsubst %/, %, $(dir $(BUILD_FILES)))
 
 npm_bin = $(addprefix $(shell npm bin)/, $(1))
 
-BABEL_OPTS = --presets es2015
+BABEL_OPTS =
 BROWSERIFY_OPTS = -t [ babelify $(BABEL_OPTS) ] -t debowerify
 ESLINT_OPTS = --fix
 LINTSPACE_OPTS = -n -d tabs -l 2

@@ -11,7 +11,7 @@
     "o-grid": "^4.0.9"
   },
   "resolutions": {
-    "o-email-only-signup": "^3.2.0",
+    "o-email-only-signup": "^3.2.1",
     "o-buttons": "^4.0.1"
   }
 }

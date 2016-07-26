@@ -50,6 +50,7 @@ public/style.css: scss/style.scss bower_components
 bower_components/%: bower.json
 	$(call npm_bin, bower) install
 
+
 # utility
 
 $(BUILD):

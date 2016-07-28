@@ -10,6 +10,9 @@ import ftwebservice from 'express-ftwebservice';
 import raven from 'raven';
 import os from 'os';
 import errorhandler from 'errorhandler';
+import fs from 'fs';
+import path from 'path';
+import https from 'https';
 
 import {getResponseMsg} from '../bower_components/o-email-only-signup/src/email-only-signup';
 import devController from './dev';
@@ -188,4 +191,9 @@ if(app.get('env') === 'development') {
 	app.use(raven.middleware.express.errorHandler(ravenClient));
 }
 
-app.listen(port, () => console.log(`Listening on port ${port}`));
+const server = https.createServer({
+	cert: fs.readFileSync(path.resolve('ft-mw4446.osb.ft.com.crt')),
+	key: fs.readFileSync(path.resolve('ft-mw4446.osb.ft.com.key')),
+}, app);
+
+server.listen(port, () => console.log(`Listening on port ${port}`));

@@ -70,7 +70,7 @@ body {
 .o-email-only-signup.o-email-only-signup {
 	// o-email-only-signup assumes the parent component can set side padding, but in FIA
 	// we have no control. Override manually here instead
-	padding: 15px 15px 0;
+	padding: 15px;
 	margin: 0;
 }
 
@@ -101,4 +101,7 @@ body {
 
 .o-email-only-signup__secondary {
 	@include responsive(4vw, $prop: 'margin-top', $min: 8px, $max: 16px);
+	// in iOS <=8 this margin collapses into the flexbox void space. we've set it
+	// as padding on .o-email-only-signup instead.
+	margin-bottom: 0;
 }

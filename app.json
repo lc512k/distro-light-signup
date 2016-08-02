@@ -8,6 +8,7 @@
     "ANON_EMAIL_LIST_HOST": {"required": true},
     "ANON_EMAIL_SVC_HOST": {"required": true},
     "SENTRY_DSN": {"required": false},
+    "SENTRY_CLIENT_DSN": {"required": false},
     "ANDROID_FORM_HACK": {"required": false},
     "ENCRYPTION_PASSWORD": {"required": true}
   },

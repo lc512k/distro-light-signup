@@ -17,10 +17,11 @@ BUILD_DIRS = $(patsubst %/, %, $(dir $(BUILD_FILES)))
 npm_bin = $(addprefix $(shell npm bin)/, $(1))
 
 BABEL_OPTS =
-BROWSERIFY_OPTS = -t [ babelify $(BABEL_OPTS) --presets es2015 ] -t debowerify
+BROWSERIFY_OPTS = -t [ babelify $(BABEL_OPTS) --presets es2015 ] -t debowerify -t envify
 ESLINT_OPTS = --fix
 LINTSPACE_OPTS = -n -d tabs -l 2
 POST_SASS_OPTS = --cssPath public --postCss autoprefixer
+UGLIFY_OPTS = --compress --mangle
 
 ifeq (,$(wildcard .env))
 FASTLY_OPTS = --service FASTLY_SERVICE vcl
@@ -31,7 +32,7 @@ endif
 HEROKU_CONFIG_OPTS = -i NODE_ENV -i HEROKU
 HEROKU_CONFIG_APP = distro-light-signup-staging
 
-all: babel public/style.css public/main.js
+all: babel public/style.css public/main.min.js
 
 # server build
 babel: $(BUILD_DIRS) $(BUILD_FILES)
@@ -43,13 +44,17 @@ $(BUILD)/%.js: ./%.js
 public/%.js: client/%.js
 	$(call npm_bin, browserify) $(BROWSERIFY_OPTS) -o $@ $<
 
+public/main.min.js: %.min.js: %.js
+	$(call npm_bin, uglifyjs) $(UGLIFY_OPTS) -o $@ $<
+
 public/style.css: scss/style.scss bower_components
 	$(call npm_bin, post-sass) $(POST_SASS_OPTS)
+
+.SECONDARY: public/main.js
 
 # installation
 bower_components/%: bower.json
 	$(call npm_bin, bower) install
-
 
 # utility
 

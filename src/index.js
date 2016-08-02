@@ -45,6 +45,8 @@ if(process.env.INJECT_SCRIPT) {
 	app.locals.injectScript = process.env.INJECT_SCRIPT;
 }
 
+app.locals.production = app.get('env') === 'production';
+
 app.engine('html', expressHandlebars({
 	extname: '.html',
 	defaultLayout: 'main',

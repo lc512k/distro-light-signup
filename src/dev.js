@@ -12,7 +12,7 @@ router.get('/subscribed/:email', (req, res, next) => {
 router.get('/barf', (req, res, next) => next(new Error('lol')));
 
 router.get('/spoor-device-id', (req, res) => {
-	const [match, spoorId] = /spoor-id=([^;]+))/.exec(req.get('cookie')) || [];
+	const [, spoorId] = /spoor-id=([^;]+))/.exec(req.get('cookie')) || [];
 	res.send(spoorId);
 });
 

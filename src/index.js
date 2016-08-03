@@ -46,6 +46,7 @@ if(process.env.INJECT_SCRIPT) {
 }
 
 app.locals.production = app.get('env') === 'production';
+app.locals.sentryClientDsn = process.env.SENTRY_CLIENT_DSN;
 
 app.engine('html', expressHandlebars({
 	extname: '.html',

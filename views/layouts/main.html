@@ -11,7 +11,17 @@
 		{{{body}}}
 	</div>
 
+{{#if production}}
+{{#if sentryClientDsn}}
+<script src="https://cdn.ravenjs.com/3.3.0/raven.min.js"></script>
+<script>
+Raven.config('{{sentryClientDsn}}').install();
+</script>
+{{/if}}
+{{/if}}
+
 <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=default,fetch&amp;flags=gated&amp;unknown=polyfill"></script>
+
 {{#unless showFormHack}}
 {{#if production}}
 <script src="/public/main.min.js"></script>
@@ -19,8 +29,10 @@
 <script src="/public/main.js"></script>
 {{/if}}
 {{/unless}}
+
 {{#if injectScript}}
 <script src="{{injectScript}}"></script>
 {{/if}}
+
 </body>
 </html>

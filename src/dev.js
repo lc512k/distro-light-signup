@@ -16,4 +16,6 @@ router.get('/spoor-device-id', (req, res) => {
 	res.send(spoorId);
 });
 
+router.get('/client-barf', (req, res) => res.render('barf'));
+
 export default router;

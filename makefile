@@ -32,7 +32,7 @@ endif
 HEROKU_CONFIG_OPTS = -i NODE_ENV -i HEROKU
 HEROKU_CONFIG_APP = distro-light-signup-staging
 
-all: babel public/style.css public/main.min.js
+all: babel public/style.css minify
 
 # server build
 babel: $(BUILD_DIRS) $(BUILD_FILES)
@@ -44,8 +44,10 @@ $(BUILD)/%.js: ./%.js
 public/%.js: client/%.js
 	$(call npm_bin, browserify) $(BROWSERIFY_OPTS) -o $@ $<
 
-public/main.min.js: %.min.js: %.js
-	$(call npm_bin, uglifyjs) $(UGLIFY_OPTS) -o $@ $<
+public/main%min.js public/main%min.js.map: public/main.js
+	$(call npm_bin, uglifyjs) $(UGLIFY_OPTS) --source-map=public/main.min.js.map --source-map-url=main.min.js.map -p relative -o $@ $<
+
+minify: public/main.min.js public/main.min.js.map
 
 public/style.css: scss/style.scss bower_components
 	$(call npm_bin, post-sass) $(POST_SASS_OPTS)

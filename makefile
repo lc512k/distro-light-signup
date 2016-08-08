@@ -22,7 +22,6 @@ ESLINT_OPTS = --fix
 LINTSPACE_OPTS = -n -d tabs -l 2
 POST_SASS_OPTS = --cssPath public --postCss autoprefixer
 UGLIFY_OPTS = --compress --mangle
-EXORCIST_OPTS =
 
 ifeq (,$(wildcard .env))
 FASTLY_OPTS = --service FASTLY_SERVICE vcl

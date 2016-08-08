@@ -45,7 +45,7 @@ public/%.js: client/%.js
 	$(call npm_bin, browserify) $(BROWSERIFY_OPTS) -o $@ $<
 
 public/main%min.js public/main%min.js.map: public/main.js
-	$(call npm_bin, uglifyjs) $(UGLIFY_OPTS) --source-map=public/main.min.js.map --source-map-url=main.min.js.map --source-map-root=public -o $@ $<
+	$(call npm_bin, uglifyjs) $(UGLIFY_OPTS) --source-map=public/main.min.js.map --source-map-url=main.min.js.map -p relative -o $@ $<
 
 minify: public/main.min.js public/main.min.js.map
 
